@@ -1,0 +1,61 @@
+class MyStack {
+private:
+    struct Queue {
+        int arr[105];
+        int front = 0;
+        int rear = -1;
+        int count = 0;
+
+        void push(int x) {
+            rear = (rear + 1) % 105;
+            arr[rear] = x;
+            count++;
+        }
+
+        int pop() {
+            int val = arr[front];
+            front = (front + 1) % 105;
+            count--;
+            return val;
+        }
+
+        int peek() {
+            return arr[front];
+        }
+
+        bool isEmpty() {
+            return count == 0;
+        }
+    };
+
+    Queue storage1, storage2;
+    Queue *q1, *q2;
+
+public:
+    MyStack() {
+        q1 = &storage1;
+        q2 = &storage2;
+    }
+    
+    void push(int x) {
+        q2->push(x);
+        while (!q1->isEmpty()) {
+            q2->push(q1->pop());
+        }
+        Queue* temp = q1;
+        q1 = q2;
+        q2 = temp;
+    }
+    
+    int pop() {
+        return q1->pop();
+    }
+    
+    int top() {
+        return q1->peek();
+    }
+    
+    bool empty() {
+        return q1->isEmpty();
+    }
+};
